@@ -21,8 +21,9 @@ module switch_hole(position, notches=use_notched_holes, kerf=0) {
 };
 
 translate([13,13]) difference() {
-  translate([-12,-12]) { square([62,24]); }
-  switch_hole([0,0], true, 0.0);
-  switch_hole([19,0], true, 0.05);
-  switch_hole([38,0], true, 0.1);
+  translate([-12,-12]) { square([81,24]); }
+  switch_hole([0,0], true, -0.05);
+  switch_hole([19,0], true, 0);
+  switch_hole([38,0], true, 0.05);
+  switch_hole([57,0], true, 0.1);
 }
