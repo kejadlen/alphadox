@@ -1,6 +1,7 @@
 module switch_hole(position, notches=use_notched_holes, kerf=0) {
   /* Cherry MX switch hole with the center at `position`. Sizes come
-     from the ErgoDox design. */
+     from the ErgoDox design. This module comes from the Atreus case:
+     https://github.com/technomancy/atreus/blob/master/case/openscad */
   hole_size    = 13.97;
   notch_width  = 3.5001;
   notch_offset = 4.2545;
