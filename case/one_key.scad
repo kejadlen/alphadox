@@ -45,7 +45,7 @@ module base_plate() {
 module spacer_plate() {
   difference() {
     base_plate();
-    hull() switch_hole(17, false);
+    hull() square(17, center=true);
   }
 }
 
@@ -81,20 +81,19 @@ module screw_hole(r) {
   circle(r,center=true);
 }
 
-module switch_hole(hole_size=13.97, notch=true, kerf=kerf) {
+module switch_hole(kerf=kerf) {
+  hole_size    = 13.97;
   notch_width  = 3.5001;
   notch_offset = 4.2545;
   notch_depth  = 0.8128;
 
   union() {
     square(hole_size-kerf, center=true);
-    if(notch) {
       translate([0, notch_offset]) {
         square([hole_size+2*notch_depth, notch_width], center=true);
       }
       translate([0, -notch_offset]) {
         square([hole_size+2*notch_depth, notch_width], center=true);
       }
-    }
   }
 }
