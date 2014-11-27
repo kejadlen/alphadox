@@ -3,7 +3,7 @@ kerf = 0; // Adjusts friction fit of switch holes
 key_spacing = 19;
 
 screw_dist = 3;
-washer = 4;
+washer = 6;
 screw = 1.5;
 
 all();
@@ -16,7 +16,7 @@ module all() {
     translate([80,0])  spacer_plate();
     translate([120,0]) key_plate();
 
-    translate([0,40]) kerf_test();
+    translate([0,45]) kerf_test();
   }
 }
 
@@ -25,7 +25,7 @@ module kerf_test(start=0, inc=0.05, stop=0.3) {
 
   difference() {
     hull() union() {
-      screw_holes([0,0], r=washer);
+      screw_holes(r=washer);
       translate([key_spacing*(times-1),0]) screw_holes([0,0], r=washer);
     }
     for(i=[0:times]) {
@@ -50,15 +50,18 @@ module spacer_plate() {
 }
 
 module cord_plate() {
-  hole_size = 12; // Actually 4 since it's rounded off by 8mm of bezel
+  hole_size = 17;
 
-  union() {
-    difference() {
-      spacer_plate();
-      translate([0,key_spacing/2+screw_dist]) square([hole_size,key_spacing],center=true);
+  difference() {
+    union() {
+      difference() {
+        spacer_plate();
+        translate([0,key_spacing/2+screw_dist]) square([hole_size,key_spacing],center=true);
+      }
+      translate([hole_size/2,key_spacing/2+screw_dist]) screw_hole(washer);
+      translate([-hole_size/2,key_spacing/2+screw_dist]) screw_hole(washer);
     }
-    translate([hole_size/2,key_spacing/2+screw_dist]) screw_hole(washer);
-    translate([-hole_size/2,key_spacing/2+screw_dist]) screw_hole(washer);
+    screw_holes();
   }
 }
 
