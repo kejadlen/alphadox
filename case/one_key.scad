@@ -1,90 +1,69 @@
-kerf = 0; // Adjusts friction fit of switch holes
+// Adjusts friction fit of switch holes.
+kerf = 0;
 
-key_spacing = 19;
+// Distance between keys.
+key_size = 19;
 
-screw_dist = 3;
-washer = 6;
-screw = 1.5;
+// Distance between keys and screws (orthogonally).
+screw_offset = 3;
 
-all();
-translate([-10,-10]) square(10, center=true);
+// Size of the screw hole.
+screw_radius = 1.5;
 
-module all() {
-  translate([key_spacing,key_spacing]) {
-    translate([0,0])   base_plate();
-    translate([40,0])  cord_plate();
-    translate([80,0])  spacer_plate();
-    translate([120,0]) key_plate();
+// Radius of the rounded corners on the bezel.
+bezel_radius = 6;
 
-    translate([0,45]) kerf_test();
-  }
-}
+// Size of the hole for the USB cord.
+cord_width = 10;
 
-module kerf_test(start=0, inc=0.05, stop=0.3) {
-  times = (stop-start)/inc;
+// Reference 10mm square for laser cutting.
+translate([0,40])   square(10, center=true);
 
+                    bottom_plate();
+translate([40,0])   spacer_plate();
+translate([0,40])   cord_plate();
+translate([40,40])  switch_plate();
+
+module bottom_plate() {
   difference() {
-    hull() union() {
-      screw_holes(r=washer);
-      translate([key_spacing*(times-1),0]) screw_holes([0,0], r=washer);
-    }
-    for(i=[0:times]) {
-      translate([key_spacing*i,0]) switch_hole(kerf=(i*inc+start));
-    }
-    translate([-(key_spacing/2 + screw_dist),0]) screw_hole(); // marker dot
-  }
-}
-
-module base_plate() {
-  difference() {
-    hull() screw_holes(r=washer);
-    screw_holes();
+    hull() screws() circle(bezel_radius, center=true);
+    screws() screw();
   }
 }
 
 module spacer_plate() {
   difference() {
-    base_plate();
-    hull() square(17, center=true);
+    bottom_plate();
+    square(14, center=true);
   }
 }
 
 module cord_plate() {
-  hole_size = 17;
-
+  bezel = screw_offset + 2*bezel_radius;
   difference() {
-    union() {
-      difference() {
-        spacer_plate();
-        translate([0,key_spacing/2+screw_dist]) square([hole_size,key_spacing],center=true);
-      }
-      translate([hole_size/2,key_spacing/2+screw_dist]) screw_hole(washer);
-      translate([-hole_size/2,key_spacing/2+screw_dist]) screw_hole(washer);
-    }
-    screw_holes();
+    bottom_plate();
+    translate([0,bezel/2]) square([14,14+bezel], center=true);
   }
 }
 
-module key_plate() {
+module switch_plate() {
   difference() {
-    base_plate();
+    bottom_plate();
     switch_hole();
   }
 }
 
-module screw_holes(r=screw) {
-  dist = key_spacing/2 + screw_dist;
+module screws() {
+  offset = key_size/2+screw_offset;
 
-  for(i=[dist,-dist])
-    for(j=[dist,-dist])
-      translate([i,j]) screw_hole(r);
+  for(x=[-offset,offset]) for(y=[-offset,offset]) translate([x,y]) children();
 }
 
-module screw_hole(r) {
-  circle(r,center=true);
+module screw() {
+  circle(screw_radius, center=true);
 }
 
-module switch_hole(kerf=kerf) {
+module switch_hole() {
   hole_size    = 13.97;
   notch_width  = 3.5001;
   notch_offset = 4.2545;
