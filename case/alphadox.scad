@@ -1,5 +1,4 @@
-// Much thanks for @technomancy's Atreus .scad for inspiration
-// and many of the specs/formulas in here.
+// Inspired by @technomancy's Atreus project:
 //
 // https://github.com/technomancy/atreus/blob/master/case/openscad/atreus_case.scad
 
@@ -44,10 +43,11 @@ translate([0,150])   cord_plate();
 translate([300,150]) switch_plate();
 
 // Helpful for visualizing the keycaps.
-//difference() {
-//  bottom_plate();
-//  whole() caps();
-//}
+translate([0,-150]) difference() {
+  bottom_plate();
+  whole() caps();
+  translate([0,20]) teensy();
+}
 
 module bottom_plate() {
   difference() {
@@ -179,4 +179,8 @@ module switch_hole() {
         square([hole_size+2*notch_depth, notch_width], center=true);
       }
   }
+}
+
+module teensy() {
+  square([17.78,30.48], center=true);
 }
