@@ -13,7 +13,7 @@ rotation = 10;
 
 // Staggering of the columns, inside->out. (The first
 // column is the single thumb key on the inside.)
-stagger = [0.25*key_size, 0, 3, 5, 4, 1, 0];
+stagger = [0.25*key_size, 1, 3, 5, 4, 2, 0];
 
 // Distance between the halves.
 hand_separation = 2;
