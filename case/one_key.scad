@@ -1,3 +1,6 @@
+// Increase resolution of the screw holes.
+$fn = 50;
+
 // Adjusts friction fit of switch holes.
 kerf = 0;
 
@@ -34,7 +37,7 @@ module bottom_plate() {
 module spacer_plate() {
   difference() {
     bottom_plate();
-    square(14, center=true);
+    square(19, center=true);
   }
 }
 

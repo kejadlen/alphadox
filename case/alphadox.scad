@@ -2,6 +2,9 @@
 //
 // https://github.com/technomancy/atreus/blob/master/case/openscad/atreus_case.scad
 
+// Increase the resolution for the small screw holes.
+$fn = 50;
+
 // Adjusts friction fit of switch holes.
 kerf = 0;
 
@@ -38,7 +41,7 @@ cord_width = 10;
 // Reference 10mm square for laser cutting.
 translate([0,150])  square(10, center=true);
 
-                     bottom_plate();
+                     difference() { bottom_plate(); signature(); }
 translate([300,0])   spacer_plate();
 translate([0,150])   cord_plate();
 translate([300,150]) switch_plate();
@@ -49,6 +52,12 @@ translate([0,-150]) difference() {
   whole() caps();
 //  whole() keys() switch_hole();
 //  translate([0,20]) teensy();
+}
+
+module signature() {
+  offset = rz_fun([7*key_size+screw_offset,3*key_size+screw_offset]);
+  translate([-offset[0],offset[1]])
+    translate([0,-10]) text("αdox", font="Athelas:style=Bold");
 }
 
 module bottom_plate() {

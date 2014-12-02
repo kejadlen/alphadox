@@ -7,6 +7,7 @@
      kerf:            0   -> 0.25
      screw offset:    1.5 -> 4
 */
+$fn = 50;
 
 n_rows       = 5;
 
