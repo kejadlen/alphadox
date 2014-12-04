@@ -8,8 +8,8 @@ $fn = 50;
 // Adjusts friction fit of switch holes.
 kerf = 0;
 
-n_cols = 10;
-n_rows = 4;
+n_cols = 2;
+n_rows = 2;
 
 // Distance between keys.
 key_size = 19;
