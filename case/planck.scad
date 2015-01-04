@@ -3,9 +3,9 @@
 // https://github.com/technomancy/atreus/blob/master/case/openscad/atreus_case.scad
 
 // Settings that most likely don't need adjusting.
-$fn          = 50;                  // Increase the resolution for the small screw holes.
+$fn          = 75;                  // Increase the resolution for the small screw holes.
 key_size     = 19;                  // Distance between keys.
-bezel        = 2.5;                 // Bezel size.
+bezel        = 3;                   // Bezel size.
 
 // User settings.
 n_cols   = 10;  // Number of columns.
@@ -17,37 +17,43 @@ kerf     = 0;  // Adjusts friction fit of switch holes.
 max_x = n_cols * key_size;
 max_y = n_rows * key_size;
 
-// USB/Teensy settings.
+// USB settings.
 usb_size      = [20.7, 10.2];
-usb_offset    = [0, 0];
+usb_offset    = [-bezel, max_y];
 
 translate([-15,-15]) reference_square();
 
-everything();
-
-module everything() {
-  difference() {
-    bottom_plate();
-    keys() switch();
-  }
+bottom_plate();
+translate([0,100]) switch_plate();
+translate([0,-100]) difference() {
+  bottom_plate();
+  translate(usb_offset) translate([usb_size[1],0])
+    mirror([0,1,0]) rotate([0,0,90]) usb();
 }
 
 module bottom_plate() {
+  offset = 2.5 * sqrt(2) / 2;
   difference() {
-    minkowski() {
-      hull() keys() square(key_size, center=true);
-      bezel();
+    hull() {
+      for(x=[-offset,max_x+offset])
+        for(y=[-offset,max_y+offset])
+          translate([x,y]) circle(d=bezel, center=true);
     }
     screws() screw();
   }
 }
 
 module switch_plate() {
-  keys() switch();
+  difference() {
+    bottom_plate();
+    keys() switch();
+    translate(usb_offset) translate([usb_size[1],0])
+      mirror([0,1,0]) rotate([0,0,90]) usb_screws();
+  }
 }
 
 module screws() {
-  translate([key_size*n_cols/2,key_size*n_rows/2]) children();
+  translate([max_x/2,max_y/2]) children();
   for(x=[key_size,key_size*(n_cols-1)])
     for(y=[key_size,key_size*(n_rows-1)])
       translate([x,y]) children();
@@ -65,29 +71,30 @@ module switch() {
   notch_offset = 4.2545;
   notch_depth  = 0.8128;
 
-  union() {
-    square(hole_size-kerf, center=true);
-      translate([0, notch_offset]) {
-        square([hole_size+2*notch_depth, notch_width], center=true);
-      }
-      translate([0, -notch_offset]) {
-        square([hole_size+2*notch_depth, notch_width], center=true);
-      }
-  }
+   union() {
+     square(hole_size-kerf, center=true);
+       translate([0, notch_offset]) {
+         square([hole_size+2*notch_depth, notch_width], center=true);
+       }
+       translate([0, -notch_offset]) {
+         square([hole_size+2*notch_depth, notch_width], center=true);
+       }
+   }
 }
 
 module usb_screws() {
+  screw_d = 3;
+
   translate([0,usb_size[1]])
     translate([0,-2.5]) {
-      translate([usb_size[0]-2.75,0]) circle(d=2, center=true);
-      translate([2.75,0]) circle(d=2, center=true);
+      translate([usb_size[0]-2.75,0]) circle(d=screw_d, center=true);
+      translate([2.75,0]) circle(d=screw_d, center=true);
     }
 }
 
 module usb() square(usb_size);
 module teensy() square(teensy_size);
 
-module bezel() circle(d=bezel, center=true);
 module screw() circle(d=screw_d, center=true);
 
 module signature(str="αXL") text(str, font="Athelas:style=Bold");
