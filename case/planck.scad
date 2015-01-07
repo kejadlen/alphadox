@@ -1,6 +1,4 @@
-// Inspired by @technomancy's Atreus project:
-//
-// https://github.com/technomancy/atreus/blob/master/case/openscad/atreus_case.scad
+// Inspired by the [Planck](http://planckkeyboard.com/)
 
 // Settings that most likely don't need adjusting.
 $fn          = 75;                  // Increase the resolution for the small screw holes.
