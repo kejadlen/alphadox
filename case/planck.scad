@@ -7,8 +7,8 @@ bezel        = 4;                   // Bezel size.
 
 // User settings.
 n_cols   = 10;  // Number of columns.
-n_rows   = 4;  // Number of rows.
-screw_d  = 3;  // Screw size.
+n_rows   = 4;   // Number of rows.
+screw_d  = 2.5; // Screw size.
 
 // Handy variables.
 max_x = n_cols * key_size;
@@ -97,8 +97,6 @@ module switch(kerf=0) {
 }
 
 module usb_screws() {
-  screw_d = 3;
-
   translate([0,usb_size[1]])
     translate([0,-2.5]) {
       translate([usb_size[0]-2.75,0]) circle(d=screw_d, center=true);
