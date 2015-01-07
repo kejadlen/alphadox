@@ -5,13 +5,12 @@
 // Settings that most likely don't need adjusting.
 $fn          = 75;                  // Increase the resolution for the small screw holes.
 key_size     = 19;                  // Distance between keys.
-bezel        = 3;                   // Bezel size.
+bezel        = 4;                   // Bezel size.
 
 // User settings.
 n_cols   = 10;  // Number of columns.
 n_rows   = 4;  // Number of rows.
 screw_d  = 3;  // Screw size.
-kerf     = 0;  // Adjusts friction fit of switch holes.
 
 // Handy variables.
 max_x = n_cols * key_size;
@@ -19,12 +18,14 @@ max_y = n_rows * key_size;
 
 // USB settings.
 usb_size      = [20.7, 10.2];
-usb_offset    = [-bezel, max_y];
+usb_offset    = [-4, max_y];
 
 translate([-15,-15]) reference_square();
 
 bottom_plate();
 translate([0,100]) switch_plate();
+translate([0,200]) support_plate();
+
 translate([0,-100]) difference() {
   bottom_plate();
   translate(usb_offset) translate([usb_size[1],0])
@@ -32,7 +33,30 @@ translate([0,-100]) difference() {
 }
 
 module bottom_plate() {
-  offset = 2.5 * sqrt(2) / 2;
+  difference() {
+    base_plate();
+    translate(usb_offset) translate([usb_size[1],0])
+      mirror([0,1,0]) rotate([0,0,90]) usb_screws();
+  }
+}
+
+module switch_plate() {
+  difference() {
+    base_plate();
+    keys() switch();
+  }
+}
+
+module support_plate() {
+  difference() {
+    base_plate();
+    keys() square(15, center=true);
+  }
+}
+
+module base_plate() {
+  offset = bezel * sqrt(2) / 2;
+
   difference() {
     hull() {
       for(x=[-offset,max_x+offset])
@@ -40,15 +64,6 @@ module bottom_plate() {
           translate([x,y]) circle(d=bezel, center=true);
     }
     screws() screw();
-  }
-}
-
-module switch_plate() {
-  difference() {
-    bottom_plate();
-    keys() switch();
-    translate(usb_offset) translate([usb_size[1],0])
-      mirror([0,1,0]) rotate([0,0,90]) usb_screws();
   }
 }
 
@@ -65,8 +80,9 @@ module keys()
       translate([x*key_size,y*key_size])
         children();
 
-module switch() {
-  hole_size    = 13.97;
+module switch(kerf=0) {
+  // hole_size    = 13.97;
+  hole_size    = 14;
   notch_width  = 3.5001;
   notch_offset = 4.2545;
   notch_depth  = 0.8128;
