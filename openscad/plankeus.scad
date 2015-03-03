@@ -70,7 +70,7 @@ module everything() {
 module bottom_plate() {
   difference() {
     base_plate();
-    translate([-usb_size[0]/2,80-usb_size[1]]) usb_screws();
+    translate([3,0]) translate(top_right_rot) rotate(-80) translate([0,-usb_size[1]]) usb_screws();
   }
 }
 
@@ -91,8 +91,6 @@ module base_plate() {
 }
 
 module bezel() {
-  offset = bezel * sqrt(2) / 2;
-
   translate([max_x,-1*key_size+stagger[n_cols]]) circle(d=bezel, center=true);
   translate([max_x,(n_rows-1)*key_size+stagger[n_cols]+2]) circle(d=bezel, center=true);
   translate([key_size*2,-1.5*key_size+stagger[1]-1]) circle(d=bezel, center=true);
