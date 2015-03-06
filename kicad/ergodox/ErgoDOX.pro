@@ -1,21 +1,8 @@
-update=Tue 09 Oct 2012 09:10:18 AM CEST
+update=Thursday, March 05, 2015 'PMt' 05:10:36 PM
 version=1
-last_client=pcbnew
+last_client=eeschema
 [general]
 version=1
-[eeschema]
-version=1
-LibDir=
-NetFmt=1
-HPGLSpd=20
-HPGLDm=15
-HPGLNum=1
-RptD_X=0
-RptD_Y=100
-RptLab=1
-LabSize=60
-[eeschema/libraries]
-LibName1=component
 [cvpcb]
 version=1
 NetIExt=net
@@ -41,3 +28,8 @@ MSegLar=240
 [pcbnew/libraries]
 LibDir=
 LibName1=footprint
+[eeschema]
+version=1
+LibDir=/Users/alpha/Dropbox/src/github.com/kejadlen/alphadox/kicad
+[eeschema/libraries]
+LibName1=component
