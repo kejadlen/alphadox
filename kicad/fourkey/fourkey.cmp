@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by Cvpcb (after 2015-jan-16 BZR unknown)-brewed_product   date = Friday, March 06, 2015 'PMt' 02:16:39 PM
+Cmp-Mod V01 Created by Cvpcb (after 2015-jan-16 BZR unknown)-brewed_product   date = Sunday, March 08, 2015 'PMt' 12:12:59 PM
 
 BeginCmp
 TimeStamp = /54F9005C;
@@ -29,45 +29,10 @@ IdModule  = footprint:MX_FLIP_DIODE;
 EndCmp
 
 BeginCmp
-TimeStamp = /54FA26EC;
-Reference = D1;
-ValeurCmp = LED;
-IdModule  = LEDs:LED-3MM;
-EndCmp
-
-BeginCmp
-TimeStamp = /54FA2752;
-Reference = D2;
-ValeurCmp = LED;
-IdModule  = LEDs:LED-3MM;
-EndCmp
-
-BeginCmp
-TimeStamp = /54FA2775;
-Reference = D3;
-ValeurCmp = LED;
-IdModule  = LEDs:LED-3MM;
-EndCmp
-
-BeginCmp
-TimeStamp = /54FA279C;
-Reference = D4;
-ValeurCmp = LED;
-IdModule  = LEDs:LED-3MM;
-EndCmp
-
-BeginCmp
-TimeStamp = /54FA251A;
-Reference = P1;
-ValeurCmp = CONN_01X06;
-IdModule  = Pin_Headers:Pin_Header_Straight_1x06;
-EndCmp
-
-BeginCmp
-TimeStamp = /54FA2AE0;
-Reference = R1;
-ValeurCmp = RESISTOR;
-IdModule  = footprint:RESISTOR;
+TimeStamp = /54FC9E1C;
+Reference = J1;
+ValeurCmp = 4PIN;
+IdModule  = Pin_Headers:Pin_Header_Straight_1x04;
 EndCmp
 
 EndListe
