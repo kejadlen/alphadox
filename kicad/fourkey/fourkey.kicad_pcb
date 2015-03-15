@@ -37,7 +37,7 @@
   )
 
   (setup
-    (last_trace_width 1.016)
+    (last_trace_width 0.6096)
     (user_trace_width 0.4064)
     (user_trace_width 0.6096)
     (user_trace_width 1.016)
@@ -160,7 +160,7 @@
     )
   )
 
-  (module footprint:MX_FLIP_DIODE (layer F.Cu) (tedit 54FCA7B2) (tstamp 54FC9E4F)
+  (module footprint:MX_FLIP_DIODE (layer F.Cu) (tedit 54FD3CA8) (tstamp 54FD406C)
     (at 188 131)
     (path /54F9005C)
     (fp_text reference 0;0 (at 0 3.302) (layer F.SilkS)
@@ -602,7 +602,7 @@
   (segment (start 204.46 144.92) (end 204.46 146.19) (width 1.016) (layer F.Cu) (net 9))
   (segment (start 204.46 146.19) (end 203.19 147.46) (width 1.016) (layer F.Cu) (net 9) (tstamp 54FCADB7))
 
-  (zone (net 2) (net_name GND) (layer F.Cu) (tstamp 54FCB787) (hatch edge 0.508)
+  (zone (net 2) (net_name GND) (layer F.Cu) (tstamp 54FD403A) (hatch edge 0.508)
     (connect_pads (clearance 0.508))
     (min_thickness 0.254)
     (fill yes (arc_segments 16) (thermal_gap 0.508) (thermal_bridge_width 0.508))
@@ -760,7 +760,7 @@
       )
     )
   )
-  (zone (net 2) (net_name GND) (layer B.Cu) (tstamp 54FCB7A0) (hatch edge 0.508)
+  (zone (net 2) (net_name GND) (layer B.Cu) (tstamp 54FD403B) (hatch edge 0.508)
     (connect_pads (clearance 0.508))
     (min_thickness 0.254)
     (fill yes (arc_segments 16) (thermal_gap 0.508) (thermal_bridge_width 0.508))
