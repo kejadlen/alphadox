@@ -10,7 +10,7 @@ key_size = 19; // Distance between keys.
 n_cols         = 6;
 n_rows         = 4;
 n_thumbs       = 2;
-thumb_offset   = [-10, -30]; // Default Ergodox offset: [-10, -30]
+thumb_offset   = [-10, -40]; // Default Ergodox offset: [-10, -30]
 thumb_rotation = 25;
 bezel          = 5;
 
@@ -23,7 +23,7 @@ bezel          = 5;
 //   120.97766
 //   124.15266
 //   124.15266
-stagger = [0, 2.5, 4, 2.5, -2, -2];
+stagger = [0, 2.5, 7.5, -2.5, -17.5, -20];
 
 // For reference!
 everything(true);
