@@ -31,10 +31,7 @@ usb_offset  = [-usb_size[0]/2,top_right_rot[1]-usb_size[1]+bezel/2];
 //translate([-50,0]) reference_square();
 
 // For reference!
-//translate([0, -90]) everything();
-
-translate([0,30])  bottom_plate();
-translate([0,140]) switch_plate();
+everything();
 
 //translate() {
 //  difference() {
@@ -77,9 +74,7 @@ module bottom_plate() {
 module switch_plate() {
   difference() {
     base_plate();
-    whole() {
-      keys() switch(notch=true);
-    }
+    whole() keys() switch(notch=true);
   }
 }
 
