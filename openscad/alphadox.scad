@@ -10,7 +10,7 @@ key_size = 19; // Distance between keys.
 n_cols         = 6;
 n_rows         = 4;
 n_thumbs       = 2;
-thumb_offset   = [-10, -40]; // Default Ergodox offset: [-10, -30]
+thumb_offset   = [-1, -26]; // Default Ergodox offset: [-10, -30]
 thumb_rotation = 25;
 bezel          = 5;
 
@@ -23,7 +23,7 @@ bezel          = 5;
 //   120.97766
 //   124.15266
 //   124.15266
-stagger = [0, 2.5, 7.5, -2.5, -17.5, -20];
+stagger = [0, 2.5, 4, 2.5, -2, -2];
 
 // For reference!
 everything(true);
@@ -38,38 +38,36 @@ module everything(switch=false, teensy=false) {
       keys() switch(notch=false);
 
     if (teensy)
-      translate([-35, 30]) teensy();
+      translate([30, -37]) rotate(-81) teensy();
   }
 }
 
 module edge_cuts() {
   min_x = (thumb_offset + rz_fun([(0.5-n_thumbs)*key_size - bezel,
-                                  2*key_size + bezel],
+                                  0.75*key_size + bezel],
                                  thumb_rotation))[0];
   max_x = (n_cols)*key_size + bezel;
   min_y = -1.5*key_size + min(stagger) - bezel;
   max_y = (n_rows-1.5)*key_size + max(stagger) + bezel;
 
   thumb_xy = thumb_offset + rz_fun([(0.5-n_thumbs)*key_size - bezel,
-                                    -key_size - bezel],
+                                    -0.75*key_size - bezel],
                                    thumb_rotation);
 
   polygon([
     thumb_xy,
-    [(min_y - thumb_xy[1])/tan(thumb_rotation) + thumb_xy[0], min_y],
+//    [(min_y - thumb_xy[1])/tan(thumb_rotation) + thumb_xy[0], min_y],
     [max_x, min_y],
     [max_x, max_y],
     [min_x, max_y],
     thumb_offset + rz_fun([(0.5-n_thumbs)*key_size - bezel,
-                           2*key_size + bezel],
+                           0.75*key_size + bezel],
                           thumb_rotation),
   ]);
 }
 
 module keys(scale=false) {
   identity   = [1, 1];
-  one_five_u = scale ? [1.5, 1] : identity;
-  two_u      = scale ? [2, 1] : identity;
 
   // Alphabet
   for (x=[0:n_cols-2])
@@ -81,11 +79,17 @@ module keys(scale=false) {
   for (x=[1:n_cols-1])
     translate([x*key_size, -key_size+stagger[x]])
       children();
+  
+  // Near column
+  for (y=[0:1])
+    translate([-key_size, (y*1.5+0.25)*key_size])
+      scale(scale ? [1, 1.5] : identity)
+        children();
 
   // Far column
   for (y=[0:n_rows-2])
     translate([(n_cols-0.75)*key_size, y*key_size+stagger[n_cols-1]])
-      scale(one_five_u)
+      scale(scale ? [1.5, 1] : identity)
         children();
 
   // Thumb cluster
@@ -94,10 +98,8 @@ module keys(scale=false) {
       for (i=[0:n_thumbs-1])
         translate([-i*key_size, 0]) {
           rotate(90) // The main thumb switches are mounted sideways
-            scale(two_u)
+            scale(scale ? [1.5, 1] : identity)
               children();
-          translate([0, 1.5*key_size])
-            children();
         }
 }
 
