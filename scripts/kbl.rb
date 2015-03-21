@@ -2,11 +2,14 @@ require 'matrix'
 require 'minitest'
 
 class KBL
-  Key = Struct.new(*%i[ name x y rotation size ]) do
-    def xy; [x, y]; end
+  Key = Struct.new(*%i[ name xy rotation size ]) do
+    def x; xy[0]; end
+    def y; xy[1]; end
   end
 
   include Math
+
+  KEY_SIZE = 19
 
   attr_reader *%i[ keys transforms ]
 
@@ -14,32 +17,38 @@ class KBL
     @keys = []
     @transforms = [Matrix.identity(3)]
 
-    instance_eval(&block)
+    instance_eval(&block) if block
   end
 
   def key(name, xy, rotation: 0, size: 1)
-    point = Matrix.column_vector(xy + [1])
-    transforms.each do |transform|
-      point = transform * point
-    end
-    keys << Key.new(name, point[0,0], point[1,0], rotation, size)
+    keys << Key.new(name, transform(xy), rotation, size)
   end
 
-  def translate(x, y, &block)
-    transform = Matrix[[1, 0, x],
-                       [0, 1, y],
-                       [0, 0, 1]]
-    transforms.unshift(transform)
-    instance_eval(&block)
-    transforms.shift
-  end
-
-  def rotate(degrees, &block)
+  def rotate(degrees)
     rads = PI * degrees / 180
 
     transform = Matrix[[cos(rads), -sin(rads), 0],
                        [sin(rads), cos(rads),  0],
                        [0,         0,          1]]
+    with_transform(transform) { yield }
+  end
+
+  def transform(xy)
+    point = Matrix.column_vector(xy + [1])
+    transforms.each do |transform|
+      point = transform * point
+    end
+    [point[0,0], point[1,0]]
+  end
+
+  def translate(x, y)
+    transform = Matrix[[1, 0, x],
+                       [0, 1, y],
+                       [0, 0, 1]]
+    with_transform(transform) { yield }
+  end
+
+  def with_transform(transform, &block)
     transforms.unshift(transform)
     instance_eval(&block)
     transforms.shift
