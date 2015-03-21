@@ -1,7 +1,50 @@
-#!/usr/bin/env ruby
-
 require 'matrix'
 require 'minitest'
+
+class KBL
+  Key = Struct.new(*%i[ name x y rotation size ]) do
+    def xy; [x, y]; end
+  end
+
+  include Math
+
+  attr_reader *%i[ keys transforms ]
+
+  def initialize(&block)
+    @keys = []
+    @transforms = [Matrix.identity(3)]
+
+    instance_eval(&block)
+  end
+
+  def key(name, xy, rotation: 0, size: 1)
+    point = Matrix.column_vector(xy + [1])
+    transforms.each do |transform|
+      point = transform * point
+    end
+    keys << Key.new(name, point[0,0], point[1,0], rotation, size)
+  end
+
+  def translate(x, y, &block)
+    transform = Matrix[[1, 0, x],
+                       [0, 1, y],
+                       [0, 0, 1]]
+    transforms.unshift(transform)
+    instance_eval(&block)
+    transforms.shift
+  end
+
+  def rotate(degrees, &block)
+    rads = PI * degrees / 180
+
+    transform = Matrix[[cos(rads), -sin(rads), 0],
+                       [sin(rads), cos(rads),  0],
+                       [0,         0,          1]]
+    transforms.unshift(transform)
+    instance_eval(&block)
+    transforms.shift
+  end
+end
 
 class TestKBL < Minitest::Test
   def test_kbl
@@ -51,54 +94,6 @@ class TestKBL < Minitest::Test
   end
 end
 
-class KBL
-  Key = Struct.new(*%i[ name x y rotation size ]) do
-    def xy; [x, y]; end
-  end
-
-  include Math
-
-  attr_reader *%i[ keys transforms ]
-
-  def initialize(&block)
-    @keys = []
-    @transforms = [Matrix.identity(3)]
-
-    instance_eval(&block)
-  end
-
-  def key(name, xy, rotation: 0, size: 1)
-    point = Matrix.column_vector(xy + [1])
-    transforms.each do |transform|
-      point = transform * point
-    end
-    keys << Key.new(name, point[0,0], point[1,0], rotation, size)
-  end
-
-  def translate(x, y, &block)
-    transform = Matrix[[1, 0, x],
-                       [0, 1, y],
-                       [0, 0, 1]]
-    transforms.unshift(transform)
-    instance_eval(&block)
-    transforms.shift
-  end
-
-  def rotate(degrees, &block)
-    rads = PI * degrees / 180
-
-    transform = Matrix[[cos(rads), -sin(rads), 0],
-                       [sin(rads), cos(rads),  0],
-                       [0,         0,          1]]
-    transforms.unshift(transform)
-    instance_eval(&block)
-    transforms.shift
-  end
-end
-
 if __FILE__ == $0
-  case ARGV.shift
-  when 'test'
-    Minitest.autorun
-  end
+  Minitest.autorun
 end
