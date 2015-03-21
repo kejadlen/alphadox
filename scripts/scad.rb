@@ -1,35 +1,35 @@
-require_relative 'kbl'
+require 'erb'
 
-class SCAD
-  TEMPLATE = DATA.read
+require_relative 'layout'
 
-  attr_reader :kbl
+module Alphadox
+  class SCAD
+    TEMPLATE = DATA.read
 
-  def initialize(kbl)
-    @kbl = kbl
-  end
+    attr_reader :layout
 
-  def to_s
-    keys = kbl.keys.map do |key|
-      out = 'children();'
-      out = "scale(scale ? [#{key.size}, 1] : [1, 1]) #{out}" unless key.size == 1
-      out = "rotate(#{key.rotation}) #{out}" unless key.rotation.zero?
-      out = "translate([#{key.x}, #{key.y}]) #{out}" unless key.xy == [0, 0]
-      out
+    def initialize(layout)
+      @layout = layout
     end
 
-    TEMPLATE << <<-TO_S
+    def to_s
+      keys = layout.keys.map do |key|
+        out = 'children();'
+        out = "scale(scale ? [#{key.size}, 1] : [1, 1]) #{out}" unless key.size == 1
+        out = "rotate(#{key.rotation}) #{out}" unless key.rotation.zero?
+        out = "translate([#{key.x}, #{key.y}]) #{out}" unless key.xy == [0, 0]
+        out
+      end
 
-module keys(scale=false) {
-  #{keys.join("\n  ")}
-}
-    TO_S
+      ERB.new(TEMPLATE).result(binding)
+    end
   end
 end
 
 if __FILE__ == $0
-  fourkey = KBL.new
-  fourkey.instance_eval(File.read(File.join(__dir__, 'fourkey.kbl')))
+  include Alphadox
+  fourkey = Layout.new
+  fourkey.instance_eval(File.read(File.join(__dir__, 'test.layout')))
   puts SCAD.new(fourkey).to_s
 end
 
@@ -46,8 +46,12 @@ module everything(switch=false) {
     if (!switch)
       keys(scale=true) square(18, center=true);
     else
-      keys() switch(notch=true);
+      keys() switch(notch=false);
   }
+}
+
+module keys(scale=false) {
+  <%= keys.join("\n  ") %>
 }
 
 module switch(notch=true, kerf=0) {
