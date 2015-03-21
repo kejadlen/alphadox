@@ -14,17 +14,26 @@ class TestKBL < Minitest::Test
       translate(10, -10) do
         key 'SW1;0', [0, 0]
       end
+
+      rotate(90) do
+        key 'SW2;0', [1, 0]
+        key 'SW2;1', [0, 1]
+      end
     end
 
     keys = Hash[kbl.keys.map {|key| [key.name, key] }]
 
-    assert_equal 'SW0;0', keys['SW0;0'].name
-    assert_equal 1, keys['SW0;0'].x
-    assert_equal 2, keys['SW0;0'].y
+    assert_xy keys, 'SW0;0', [1, 2]
+    assert_xy keys, 'SW0;1', [2, 0]
+    assert_xy keys, 'SW1;0', [10, -10]
+    assert_xy keys, 'SW2;0', [0, 1]
+    assert_xy keys, 'SW2;1', [-1, 0]
+  end
 
-    assert_equal 2, keys['SW0;1'].x
-
-    assert_equal [10, -10], keys['SW1;0'].xy
+  def assert_xy(keys, name, xy)
+    x, y = xy
+    assert_in_delta x, keys[name].x
+    assert_in_delta y, keys[name].y
   end
 end
 
@@ -33,6 +42,8 @@ Key = Struct.new(*%i[ name x y rotation size ]) do
 end
 
 class KBL
+  include Math
+
   attr_reader *%i[ keys transforms ]
 
   def initialize(&block)
@@ -54,6 +65,17 @@ class KBL
     transform = Matrix[[1, 0, x],
                        [0, 1, y],
                        [0, 0, 1]]
+    transforms.unshift(transform)
+    instance_eval(&block)
+    transforms.shift
+  end
+
+  def rotate(degrees, &block)
+    rads = PI * degrees / 180
+
+    transform = Matrix[[cos(rads), -sin(rads), 0],
+                       [sin(rads), cos(rads),  0],
+                       [0,         0,          1]]
     transforms.unshift(transform)
     instance_eval(&block)
     transforms.shift
