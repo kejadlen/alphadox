@@ -51,11 +51,11 @@ class TestKBL < Minitest::Test
   end
 end
 
-Key = Struct.new(*%i[ name x y rotation size ]) do
-  def xy; [x, y]; end
-end
-
 class KBL
+  Key = Struct.new(*%i[ name x y rotation size ]) do
+    def xy; [x, y]; end
+  end
+
   include Math
 
   attr_reader *%i[ keys transforms ]
