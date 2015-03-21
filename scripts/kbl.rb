@@ -13,11 +13,21 @@ class TestKBL < Minitest::Test
 
       translate(10, -10) do
         key 'SW1;0', [0, 0]
+
+        rotate(-90) do
+          key 'SW3;0', [0, 0]
+          key 'SW3;1', [0, 1]
+        end
       end
 
       rotate(90) do
         key 'SW2;0', [1, 0]
         key 'SW2;1', [0, 1]
+
+        translate(10, 0) do
+          key 'SW4;0', [0, 0]
+          key 'SW4;1', [-11, 0]
+        end
       end
     end
 
@@ -28,6 +38,10 @@ class TestKBL < Minitest::Test
     assert_xy keys, 'SW1;0', [10, -10]
     assert_xy keys, 'SW2;0', [0, 1]
     assert_xy keys, 'SW2;1', [-1, 0]
+    assert_xy keys, 'SW3;0', [10, -10]
+    assert_xy keys, 'SW3;1', [11, -10]
+    assert_xy keys, 'SW4;0', [0, 10]
+    assert_xy keys, 'SW4;1', [0, -1]
   end
 
   def assert_xy(keys, name, xy)
