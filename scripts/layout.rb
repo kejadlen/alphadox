@@ -21,8 +21,8 @@ module Alphadox
       instance_eval(&block) if block
     end
 
-    def key(name, xy, rotation: 0, size: 1)
-      keys << Key.new(name, transform(xy), rotation, size)
+    def key(name, rotation: 0, size: 1)
+      keys << Key.new(name, transform([0,0]), rotation, size)
     end
 
     def rotate(degrees)
@@ -64,25 +64,25 @@ class TestLayout < Minitest::Test
     layout = Layout.new do
       i = 2
 
-      key 'SW0;0', [1, 2]
-      key 'SW0;1', [i, 0]
+      translate(1, 2) { key 'SW0;0' }
+      translate(i, 0) { key 'SW0;1' }
 
       translate(10, -10) do
-        key 'SW1;0', [0, 0]
+        key 'SW1;0'
 
         rotate(-90) do
-          key 'SW3;0', [0, 0]
-          key 'SW3;1', [0, 1]
+          key 'SW3;0'
+          translate(0, 1) { key 'SW3;1' }
         end
       end
 
       rotate(90) do
-        key 'SW2;0', [1, 0]
-        key 'SW2;1', [0, 1]
+        translate(1, 0) { key 'SW2;0' }
+        translate(0, 1) { key 'SW2;1' }
 
         translate(10, 0) do
-          key 'SW4;0', [0, 0]
-          key 'SW4;1', [-11, 0]
+          key 'SW4;0'
+          translate(-11, 0) { key 'SW4;1' }
         end
       end
     end
