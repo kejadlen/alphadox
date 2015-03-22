@@ -36,9 +36,8 @@ module Alphadox
 
     def transform(xy)
       point = Matrix.column_vector(xy + [1])
-      transforms.each do |transform|
-        point = transform * point
-      end
+      transform = transforms.inject(&:*)
+      point = transform * point
       [point[0,0], point[1,0]]
     end
 
@@ -50,9 +49,9 @@ module Alphadox
     end
 
     def with_transform(transform, &block)
-      transforms.unshift(transform)
+      transforms << transform
       instance_eval(&block)
-      transforms.shift
+      transforms.pop
     end
   end
 end
