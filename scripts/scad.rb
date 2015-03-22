@@ -28,9 +28,9 @@ end
 
 if __FILE__ == $0
   include Alphadox
-  fourkey = Layout.new
-  fourkey.instance_eval(File.read(File.join(__dir__, 'test.layout')))
-  puts SCAD.new(fourkey).to_s
+  layout = Layout.new
+  layout.instance_eval(ARGF.read)
+  puts SCAD.new(layout).to_s
 end
 
 __END__

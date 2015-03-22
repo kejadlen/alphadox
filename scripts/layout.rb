@@ -22,7 +22,9 @@ module Alphadox
     end
 
     def key(name, rotation: 0, size: 1)
-      keys << Key.new(name, transform([0,0]), rotation, size)
+      point = transform * Matrix.column_vector([0, 0, 1])
+      xy = [point[0,0], point[1,0]]
+      keys << Key.new(name, xy, rotation, size)
     end
 
     def rotate(degrees)
@@ -34,11 +36,8 @@ module Alphadox
       with_transform(transform) { yield }
     end
 
-    def transform(xy)
-      point = Matrix.column_vector(xy + [1])
-      transform = transforms.inject(&:*)
-      point = transform * point
-      [point[0,0], point[1,0]]
+    def transform
+      transforms.inject(&:*)
     end
 
     def translate(x, y)
