@@ -25,6 +25,8 @@ module Alphadox
         out = "translate([#{x.round(2)}, #{y.round(2)}]) children();" unless [x, y] == [0, 0]
       end
 
+      edge_cuts = layout.edge_cuts.map {|x,y| "[#{x.round(2)}, #{y.round(2)}]" }
+
       ERB.new(TEMPLATE).result(binding)
     end
   end
@@ -60,6 +62,12 @@ module keys(scale=false) {
 
 module screws() {
   <%= screws.join("\n  ") %>
+}
+
+module edge_cuts() {
+  polygon([
+    <%= edge_cuts.join(",\n    ") %>
+  ]);
 }
 
 module switch(notch=true, kerf=0) {

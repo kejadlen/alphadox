@@ -12,25 +12,31 @@ module Alphadox
 
     KEY_SIZE = 19
 
-    attr_reader *%i[ keys screws transforms ]
+    attr_reader *%i[ edge_cuts keys screws transforms ]
 
     def initialize(&block)
-      @keys = []
-      @screws = []
+      @edge_cuts, @keys, @screws = [], [], []
+
       @transforms = [Matrix.identity(3)]
 
       instance_eval(&block) if block
     end
 
-    def key(name, rotation: 0, size: 1)
+    def current_xy
       point = transform * Matrix.column_vector([0, 0, 1])
-      xy = [point[0,0], point[1,0]]
+      [point[0,0], point[1,0]]
+    end
 
+    def edge_cut
+      edge_cuts << current_xy
+    end
+
+    def key(name, rotation: 0, size: 1)
       rad = acos(transform[0, 0])
       degree = (rad * 180 / PI).round
       rotation += degree
 
-      keys << Key.new(name, xy, rotation, size)
+      keys << Key.new(name, current_xy, rotation, size)
     end
 
     def rotate(degrees)
@@ -43,9 +49,7 @@ module Alphadox
     end
 
     def screw
-      point = transform * Matrix.column_vector([0, 0, 1])
-      xy = [point[0,0], point[1,0]]
-      screws << xy
+      screws << current_xy
     end
 
     def transform
