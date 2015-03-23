@@ -21,6 +21,10 @@ module Alphadox
         out
       end
 
+      screws = layout.screws.map do |x, y|
+        out = "translate([#{x.round(2)}, #{y.round(2)}]) children();" unless [x, y] == [0, 0]
+      end
+
       ERB.new(TEMPLATE).result(binding)
     end
   end
@@ -52,6 +56,10 @@ module everything(switch=false) {
 
 module keys(scale=false) {
   <%= keys.join("\n  ") %>
+}
+
+module screws() {
+  <%= screws.join("\n  ") %>
 }
 
 module switch(notch=true, kerf=0) {

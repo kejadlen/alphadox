@@ -12,10 +12,11 @@ module Alphadox
 
     KEY_SIZE = 19
 
-    attr_reader *%i[ keys transforms ]
+    attr_reader *%i[ keys screws transforms ]
 
     def initialize(&block)
       @keys = []
+      @screws = []
       @transforms = [Matrix.identity(3)]
 
       instance_eval(&block) if block
@@ -39,6 +40,12 @@ module Alphadox
                          [sin(rads), cos(rads),  0],
                          [0,         0,          1]]
       with_transform(transform) { yield }
+    end
+
+    def screw
+      point = transform * Matrix.column_vector([0, 0, 1])
+      xy = [point[0,0], point[1,0]]
+      screws << xy
     end
 
     def transform
