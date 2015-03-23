@@ -1,0 +1,99 @@
+N_COLS = 6
+N_ROWS = 4
+N_THUMBS = 2
+BEZEL = 5
+
+STAGGER = [0, 2.5, 4, 2.5, -2, -2] # Ergodox default
+THUMB_OFFSET = [-10, -30] # Ergodox default
+THUMB_ROTATION = 25       # Ergodox default
+
+def thumb
+  translate(*THUMB_OFFSET) do
+    rotate(THUMB_ROTATION) do
+      yield
+    end
+  end
+end
+
+# Alphabet
+(0..N_COLS-2).each do |x|
+  (0..2).each do |y|
+    translate(x*KEY_SIZE, y*KEY_SIZE + STAGGER[x]) do
+      key "SW#{y+1};#{x+8}"
+    end
+  end
+end
+
+# Bottom row
+(1..N_COLS-1).each do |x|
+  translate(x*KEY_SIZE, -KEY_SIZE + STAGGER[x]) do
+    key "SW0;#{x+8}"
+  end
+end
+
+# Outer column
+(0..2).each do |y|
+  translate((N_COLS-0.75)*KEY_SIZE, y*KEY_SIZE + STAGGER[N_COLS-1]) do
+    key "SW#{y+1};13"
+  end
+end
+
+# Thumb cluster
+(0..N_THUMBS-1).each do |i|
+  thumb do
+    translate(-i*KEY_SIZE, 0) do
+      key "SW0;#{8-i}", rotation: 90, size: 2
+    end
+    translate(-i*KEY_SIZE, 1.5*KEY_SIZE) do
+      key "SW#{3-2*i};7"
+    end
+  end
+end
+
+# Thumb screw
+thumb do
+  translate(-0.5*KEY_SIZE, 0.75*KEY_SIZE) do
+    screw
+  end
+end
+
+# Other screws
+[
+  [0.5,  1.5, 0.5],
+  [1.5, -0.5, 1.5],
+  [4.5,  1.5, 4.5],
+  [4.5, -0.5, 4.5]
+].each do |x, y, col|
+  offset = (STAGGER[col-0.5] + STAGGER[col+0.5]) / 2
+  translate(x*KEY_SIZE, y*KEY_SIZE + offset) do
+    screw
+  end
+end
+
+# Edge cuts
+thumb do
+  [
+    [-0.5*KEY_SIZE, 2*KEY_SIZE + BEZEL],
+    [(0.5-N_THUMBS)*KEY_SIZE - BEZEL, 2*KEY_SIZE + BEZEL],
+    [(0.5-N_THUMBS)*KEY_SIZE - BEZEL, -KEY_SIZE - BEZEL]
+  ].each do |x, y|
+    translate(x, y) do
+      edge_cut
+    end
+  end
+end
+
+max_x = N_COLS*KEY_SIZE + BEZEL;
+min_y = -1.5*KEY_SIZE + STAGGER.min - BEZEL;
+max_y = (N_ROWS-1.5)*KEY_SIZE + STAGGER.max + BEZEL;
+
+[
+  [(min_y - edge_cuts[2][1])/tan(THUMB_ROTATION * PI / 180) + edge_cuts[2][0], min_y],
+  [max_x, min_y],
+  [max_x, max_y],
+  [edge_cuts[0][0], max_y]
+].each do |x, y|
+  translate(x, y) do
+    edge_cut
+  end
+end
