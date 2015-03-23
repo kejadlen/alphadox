@@ -24,6 +24,11 @@ module Alphadox
     def key(name, rotation: 0, size: 1)
       point = transform * Matrix.column_vector([0, 0, 1])
       xy = [point[0,0], point[1,0]]
+
+      rad = acos(transform[0, 0])
+      degree = (rad * 180 / PI).round
+      rotation += degree
+
       keys << Key.new(name, xy, rotation, size)
     end
 

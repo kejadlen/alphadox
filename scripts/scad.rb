@@ -17,7 +17,7 @@ module Alphadox
         out = 'children();'
         out = "scale(scale ? [#{key.size}, 1] : [1, 1]) #{out}" unless key.size == 1
         out = "rotate(#{key.rotation}) #{out}" unless key.rotation.zero?
-        out = "translate([#{key.x}, #{key.y}]) #{out}" unless key.xy == [0, 0]
+        out = "translate([#{key.x.round(2)}, #{key.y.round(2)}]) #{out}" unless key.xy == [0, 0]
         out
       end
 
