@@ -3,6 +3,8 @@ require 'minitest'
 
 module Alphadox
   class Layout
+    # Why is there a class for this and none of the other
+    # parts of the layout? Good question.
     Key = Struct.new(*%i[ name xy rotation size ]) do
       def x; xy[0]; end
       def y; xy[1]; end
@@ -12,10 +14,10 @@ module Alphadox
 
     KEY_SIZE = 19
 
-    attr_reader *%i[ edge_cuts keys screws transforms ]
+    attr_reader *%i[ edge_cuts holes keys screws transforms ]
 
     def initialize(&block)
-      @edge_cuts, @keys, @screws = [], [], []
+      @edge_cuts, @holes, @keys, @screws = [], [], [], []
 
       @transforms = [Matrix.identity(3)]
 
@@ -29,6 +31,10 @@ module Alphadox
 
     def edge_cut
       edge_cuts << current_xy
+    end
+
+    def hole(diameter)
+      holes << [current_xy, diameter]
     end
 
     def key(name, rotation: 0, size: 1)
