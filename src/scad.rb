@@ -12,22 +12,30 @@ module Alphadox
       @layout = layout
     end
 
+    def edge_cuts
+      layout.edge_cuts.map {|x,y| "[#{x.round(2)}, #{y.round(2)}]" }
+    end
+
+    def keys
+      layout.keys.map do |key|
+        out = %w[ children(); ]
+        out << "scale(scale ? [#{key.size}, 1] : [1, 1])" unless key.size == 1
+        out << "rotate(#{key.rotation})" unless key.rotation.zero?
+        out << "translate([#{key.x.round(2)}, #{key.y.round(2)}])" unless key.xy == [0, 0]
+        out.reverse.join(' ')
+      end
+    end
+
+    def screws
+      layout.screws.map do |x, y|
+        out = %w[ children(); ]
+        out << "translate([#{x.round(2)}, #{y.round(2)}])" unless [x, y] == [0, 0]
+        out.reverse.join(' ')
+      end
+    end
+
     def to_s
-      keys = layout.keys.map do |key|
-        out = 'children();'
-        out = "scale(scale ? [#{key.size}, 1] : [1, 1]) #{out}" unless key.size == 1
-        out = "rotate(#{key.rotation}) #{out}" unless key.rotation.zero?
-        out = "translate([#{key.x.round(2)}, #{key.y.round(2)}]) #{out}" unless key.xy == [0, 0]
-        out
-      end
-
-      screws = layout.screws.map do |x, y|
-        out = "translate([#{x.round(2)}, #{y.round(2)}]) children();" unless [x, y] == [0, 0]
-      end
-
-      edge_cuts = layout.edge_cuts.map {|x,y| "[#{x.round(2)}, #{y.round(2)}]" }
-
-      ERB.new(TEMPLATE).result(binding)
+      ERB.new(TEMPLATE, nil, '<>').result(binding)
     end
   end
 end
@@ -57,16 +65,22 @@ module everything(switch=false) {
 }
 
 module keys(scale=false) {
-  <%= keys.join("\n  ") %>
+<% keys.each do |key| %>
+  <%= key %>
+<% end %>
 }
 
 module screws() {
-  <%= screws.join("\n  ") %>
+<% screws.each do |screw| %>
+  <%= screw %>
+<% end %>
 }
 
 module edge_cuts() {
   polygon([
-    <%= edge_cuts.join(",\n    ") %>
+<% edge_cuts.each do |edge_cut| %>
+    <%= edge_cut %>
+<% end %>
   ]);
 }
 
