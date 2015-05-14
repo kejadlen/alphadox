@@ -79,7 +79,7 @@ module screws() {
 module edge_cuts() {
   polygon([
 <% edge_cuts.each do |edge_cut| %>
-    <%= edge_cut %>
+    <%= edge_cut %>,
 <% end %>
   ]);
 }
