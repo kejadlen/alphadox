@@ -12,7 +12,7 @@ module Alphadox
 
     include Math
 
-    KEY_SIZE = 19
+    KEY_SIZE = 19.0
 
     attr_reader *%i[ edge_cuts holes keys screws transforms ]
 
@@ -40,13 +40,13 @@ module Alphadox
     def key(name, rotation: 0, size: 1)
       rad = acos(transform[0, 0])
       degree = (rad * 180 / PI).round
-      rotation += degree
+      rotation = degree - rotation
 
       keys << Key.new(name, current_xy, rotation, size)
     end
 
     def rotate(degrees)
-      rads = PI * degrees / 180
+      rads = PI * -degrees / 180
 
       transform = Matrix[[cos(rads), -sin(rads), 0],
                          [sin(rads), cos(rads),  0],
