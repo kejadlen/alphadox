@@ -1,0 +1,13 @@
+(module SCREWS (layer F.Cu) (tedit 550B674B)
+  (fp_text reference REF** (at 0 0.75) (layer F.SilkS) hide
+    (effects (font (size 1.5 1.5) (thickness 0.15)))
+  )
+  (fp_text value SCREWS (at 0 -0.75) (layer F.Fab) hide
+    (effects (font (size 1.5 1.5) (thickness 0.15)))
+  )
+  (pad "" np_thru_hole circle (at -24.63 21.1) (size 2 2) (drill 2) (layers *.Cu *.Mask F.SilkS))
+  (pad "" np_thru_hole circle (at 9.5 -29.75) (size 2 2) (drill 2) (layers *.Cu *.Mask F.SilkS))
+  (pad "" np_thru_hole circle (at 28.5 6.25) (size 2 2) (drill 2) (layers *.Cu *.Mask F.SilkS))
+  (pad "" np_thru_hole circle (at 85.5 -26.5) (size 2 2) (drill 2) (layers *.Cu *.Mask F.SilkS))
+  (pad "" np_thru_hole circle (at 85.5 11.5) (size 2 2) (drill 2) (layers *.Cu *.Mask F.SilkS))
+)

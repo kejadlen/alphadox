@@ -1,20 +1,20 @@
-require "minitest/autorun"
+require "minitest"
 
 require "strscan"
 
 module Alphadox
-  module SExp
+  class SExp
     # A quick and dirty s-expression parser to read in KiCAD files.
     def self.parse(str)
       ss = StringScanner.new(str)
       raise "OMG" if ss.scan(/\s*\(/).nil?
 
-      stack = [[]]
+      stack = [self.new]
 
       until ss.eos?
         case
         when ss.scan(/\(/)
-          stack << []
+          stack << self.new
         when ss.scan(/\)/)
           last = stack.pop
           return last if stack.empty?
@@ -32,11 +32,35 @@ module Alphadox
 
       raise "OMG"
     end
+
+    attr_reader :data
+
+    def initialize
+      @data = []
+    end
+
+    def <<(value)
+      data << value
+    end
+
+    def args
+      data[1..-1]
+    end
+
+    def op
+      data[0]
+    end
+
+    def to_a
+      data.map do |value|
+        (self.class === value) ? value.to_a : value
+      end
+    end
   end
 
   class TestSExp < Minitest::Test
     def assert_parsed(expected, input)
-      assert_equal expected, SExp.parse(input)
+      assert_equal expected, SExp.parse(input).to_a
     end
 
     def test_sexp
@@ -53,4 +77,8 @@ module Alphadox
       assert_raises(RuntimeError) { SExp.parse("a") }
     end
   end
+end
+
+if __FILE__ == $0
+  Minitest.autorun
 end

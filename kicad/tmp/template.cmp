@@ -1,0 +1,38 @@
+Cmp-Mod V01 Created by Cvpcb (after 2015-jan-16 BZR unknown)-brewed_product   date = Tuesday, June 02, 2015 'PMt' 08:33:47 PM
+
+BeginCmp
+TimeStamp = /551350A1;
+Reference = SW0:2;
+ValeurCmp = SW0:1;
+IdModule  = footprints:MX_FLIP_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /551350A7;
+Reference = SW0:3;
+ValeurCmp = SW0:0;
+IdModule  = footprints:MX_FLIP_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /55134F03;
+Reference = SW1:2;
+ValeurCmp = SW1:1;
+IdModule  = footprints:MX_FLIP_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /55134F46;
+Reference = SW1:3;
+ValeurCmp = SW1;0;
+IdModule  = footprints:MX_FLIP_DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /556E74BF;
+Reference = U1;
+ValeurCmp = TEENSY2.0;
+IdModule  = footprint:TEENSY_2.0;
+EndCmp
+
+EndListe
