@@ -1,6 +1,6 @@
-update=Thursday, March 05, 2015 'PMt' 05:10:36 PM
+update=Sunday, August 19, 2018 at 09:10:14 PM
 version=1
-last_client=eeschema
+last_client=kicad
 [general]
 version=1
 [cvpcb]
@@ -30,6 +30,4 @@ LibDir=
 LibName1=footprint
 [eeschema]
 version=1
-LibDir=/Users/alpha/Dropbox/src/github.com/kejadlen/alphadox/kicad
-[eeschema/libraries]
-LibName1=component
+LibDir=
