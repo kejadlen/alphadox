@@ -1,2 +1,7 @@
+# kicad
 _autosave-*
 *bak
+*.net
+
+# generated files
+*.dxf
