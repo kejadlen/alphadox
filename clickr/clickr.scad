@@ -6,16 +6,18 @@ screw_d = 2.1;
 everything();
 
 module everything() {
-    translate([-35,  40]) switch_plate();
-    translate([ 35,  70]) spacer_plate();
-    translate([-35, -40]) spacer_plate();
-    translate([ 35, -40]) bottom_plate();
+    translate([   0,   0]) switch_plate();
+    translate([  60,   0]) spacer_plate();
+    translate([   0, 100]) spacer_plate();
+    translate([  60, 100]) bottom_plate();
+    translate([ 120, 100]) plate(feather=true);
 }
 
 module switch_plate() {
     difference() {
         plate();
-        switches();
+        translate([0.75, 0]) // Ugh, math?
+            switches();
         jst_passthrough();
     }
 }
@@ -48,8 +50,8 @@ module jst_passthrough() {
             translate([0,  2.5]) circle(d=5, center=true);
             translate([0, -2.5]) circle(d=5, center=true);
         }
-        translate([0, 5 - (key_size/2 - 13.9/2)])
-            square([5, key_size/2 - 13.9/2]);
+//        translate([0, 5 - (key_size/2 - 13.9/2)])
+//            square([5, key_size/2 - 13.9/2]);
     }
 }
 

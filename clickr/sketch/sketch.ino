@@ -52,7 +52,7 @@ void error(const __FlashStringHelper*err) {
 int rows[3] = { 5, 6, 9 };
 int cols[2] = { 11, 10 };
 
-#define MAX_CHECKS 1
+#define MAX_CHECKS 5
 #define NUM_KEYS 6
 int debounced[NUM_KEYS];            // the debounced state
 int state[NUM_KEYS];                // the previous state
@@ -150,7 +150,9 @@ void debounceSwitches() {
 
 bool updateState() {
   bool stateChanged = false;
-  for (int i=0; i<NUM_KEYS; i++) {
+  for (int i=0; i<NUM_KEYS; i++) { 
+    if (i == 2) continue;
+     
     if (debounced[i] != state[i]) {
       stateChanged = true;
       state[i] = debounced[i];
@@ -165,6 +167,9 @@ String calculateCommand() {
 
   if (state[0] == LOW) codes[numCodes++] = String("4F");
   if (state[1] == LOW) codes[numCodes++] = String("50");
+  if (state[3] == LOW) codes[numCodes++] = String("50");
+  if (state[4] == LOW) codes[numCodes++] = String("50");
+  if (state[5] == LOW) codes[numCodes++] = String("50");
 
   String cmd = String("AT+BLEKEYBOARDCODE=00-00");
   for (int i=0; i<numCodes; i++) {
