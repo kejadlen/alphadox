@@ -1,0 +1,44 @@
+esphome:
+  name: big_switch_lamp
+  platform: ESP8266
+  board: huzzah
+
+wifi:
+  networks:
+    - ssid: "Always B Kind"
+      password: "forgone-wood-giddy-mask-sternal"
+      hidden: true
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Big Switch Lamp Fallback Hotspot"
+    password: "T9Y64FyrgMOi"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+light:
+  - platform: neopixelbus
+    type: GRBW
+    pin: RX
+    num_leds: 24
+    name: Big Switch Lamp
+    id: big_switch_lamp
+    effects:
+      - random:
+      - strobe:
+      - flicker:
+      - addressable_rainbow:
+      - addressable_color_wipe:
+      - addressable_scan:
+      - addressable_twinkle:
+      - addressable_random_twinkle:
+      - addressable_fireworks:
+      - addressable_flicker:
