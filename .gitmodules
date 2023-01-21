@@ -1,3 +1,6 @@
 [submodule "keyboardio-kicad-libraries"]
 	path = keyboardio-kicad-libraries
 	url = https://github.com/keyboardio/keyboardio-kicad-libraries.git
+[submodule "qmk_hardware"]
+	path = qmk_hardware
+	url = https://github.com/qmk/qmk_hardware.git
