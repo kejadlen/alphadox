@@ -1,7 +1,4 @@
-require "rake/testtask"
+require "minitest/test_task"
 
-Rake::TestTask.new do |t|
-  t.libs << "lib"
-  t.test_files = FileList["test/test_*.rb"]
-  t.verbose = true
-end
+Minitest::TestTask.create
+task default: :test
