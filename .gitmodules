@@ -4,3 +4,9 @@
 [submodule "qmk_hardware"]
 	path = qmk_hardware
 	url = https://github.com/qmk/qmk_hardware.git
+[submodule "keebio-components"]
+	path = keebio-components
+	url = https://github.com/keebio/keebio-components.git
+[submodule "Keebio-Parts.pretty"]
+	path = Keebio-Parts.pretty
+	url = https://github.com/keebio/Keebio-Parts.pretty.git
